@@ -7,44 +7,43 @@ const User = require("../../src/db/models").User;
 
 describe("routes : wikis", () => {
     
-    beforeEach((done) => {
-      this.user;
-      this.wiki;
-      sequelize.sync({force: true}).then((res) => {
-    
-      User.create({
-        username: "bob",
-        email: "admin@example.com",
-        password: "123456",
-      })
-        .then((user) => {
-            //console.log("USER", user);
-            this.user = user;
-            //console.log("MONKEY",this.user);
-            request.get({         // mock authentication
-            url: "http://localhost:3000/auth/fake",
-            form: {
-                username: user.username,
-                userId: user.id,
-                email: user.email
-            }
-            });
-            console.log("1 CHECK",this.user);
-            done();
-      })
-      
-    });
-    console.log("2 CHECK",this.user);
-    });
+      beforeEach((done) => {
+        let userObj;
+        let wikiObj;
+        sequelize.sync({force: true}).then((res) => {
+        
+        User.create({
+            username: "bob",
+            email: "admin@example.com",
+            password: "123456",
+        })
+            .then((user) => {
+                //console.log("USER", user);
+                userObj = user;
+                //console.log("MONKEY",userObj);
+                request.get({         // mock authentication
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                    username: user.username,
+                    userId: user.id,
+                    email: user.email
+                }
+                });
+                done();
+                //console.log("1 CHECK",userObj);      
+        })
+        });
+        //console.log("2 CHECK",userObj);
+        });
     
 
     describe("GET /wikis", () => {
-      console.log("3 CHECK", this.user);
+        console.log("USEROBJ",userObj);
+      //console.log("3 CHECK", userObj);
       it("should respond with all wikis", (done) => {
         request.get(base, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).toContain("Wikis");
-          expect(body).toContain("JS Frameworks");
           done();
         });
       });
@@ -64,13 +63,13 @@ describe("routes : wikis", () => {
     });
 
     describe("POST /wikis/create", () => {
-     console.log("CREATE", this.user);
+     //console.log("CREATE", userObj);
       const options = {
         url: `${base}create`,
         form: {
           title: "blink-182 songs",
           body: "What's your favorite blink-182 song?",
-          userId: this.user.id
+          userId: userObj.id
         }
       };
 
@@ -95,7 +94,7 @@ describe("routes : wikis", () => {
     describe("GET /wikis/:id", () => {
 
       it("should render a view with the selected wiki", (done) => {
-        request.get(`${base}${this.wiki.id}`, (err, res, body) => {
+        request.get(`${base}${wikiObj.id}`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).toContain("JS Frameworks");
           done();
@@ -114,7 +113,7 @@ describe("routes : wikis", () => {
 
           expect(wikiCountBeforeDelete).toBe(1);
 
-          request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
+          request.post(`${base}${wikiObj.id}/destroy`, (err, res, body) => {
             Wiki.all()
             .then((wikis) => {
               expect(err).toBeNull();
@@ -136,7 +135,7 @@ describe("routes : wikis", () => {
     describe("GET /wikis/:id/edit", () => {
 
       it("should render a view with an edit wiki form", (done) => {
-        request.get(`${base}${this.wiki.id}/edit`, (err, res, body) => {
+        request.get(`${base}${wikiObj.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).toContain("Edit Wiki");
           expect(body).toContain("JS Frameworks");
@@ -150,11 +149,11 @@ describe("routes : wikis", () => {
 
       it("should update the wiki with the given values", (done) => {
         request.post({
-          url: `${base}${this.wiki.id}/update`,
+          url: `${base}${wikiObj.id}/update`,
           form: {
             title: "JavaScript Frameworks",
             body: "There are a lot of them",
-            userId: this.user.id
+            userId: userObj.id
           }
         }, (err, res, body) => {
           expect(err).toBeNull();
@@ -207,7 +206,7 @@ describe("routes : wikis", () => {
       it("should redirect to wikis view", (done) => {
         request.get(`${base}new`, (err, res, body) => {
           expect(err).toBeNull();
-          expect(body).toContain("Wikis");
+          expect(body).toContain("New Wiki");
           done();
         });
       });
@@ -220,7 +219,7 @@ describe("routes : wikis", () => {
         form: {
           title: "blink-182 songs",
           body: "What's your favorite blink-182 song?",
-          userId: this.user.id
+          userId: userObj.id
         }
       }
 
@@ -244,9 +243,9 @@ describe("routes : wikis", () => {
     describe("GET /wikis/:id", () => {
 
       it("should render a view with the selected wiki", (done) => {
-        // variables defined outside, like `this.wiki` are only available
+        // variables defined outside, like `wikiObj` are only available
         // inside `it` blocks.
-        request.get(`${base}${this.wiki.id}`, (err, res, body) => {
+        request.get(`${base}${wikiObj.id}`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).toContain("JS Frameworks");
           done();
@@ -264,7 +263,7 @@ describe("routes : wikis", () => {
 
           expect(wikiCountBeforeDelete).toBe(1);
 
-          request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
+          request.post(`${base}${wikiObj.id}/destroy`, (err, res, body) => {
             Wiki.all()
             .then((wikis) => {
               // confirm that no wikis were deleted
@@ -287,7 +286,7 @@ describe("routes : wikis", () => {
 
       it("should not render a view with an edit wiki form", (done) => {
 
-        request.get(`${base}${this.wiki.id}/edit`, (err, res, body) => {
+        request.get(`${base}${wikiObj.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).not.toContain("Edit Wiki");
           expect(body).toContain("JS Frameworks"); // confirm redirect to wiki show
@@ -301,11 +300,11 @@ describe("routes : wikis", () => {
 
       it("should not update the wiki with the given values", (done) => {
         const options = {
-          url: `${base}${this.wiki.id}/update`,
+          url: `${base}${wikiObj.id}/update`,
           form: {
             title: "JavaScript Frameworks",
             body: "There are a lot of them",
-            userId: this.user.id
+            userId: userObj.id
           }
         }
 
