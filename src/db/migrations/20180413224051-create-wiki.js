@@ -11,12 +11,10 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       body: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       private: {
         type: Sequelize.BOOLEAN
