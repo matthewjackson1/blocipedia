@@ -46,7 +46,39 @@ module.exports = {
     else {
         return(err);
     }
-  }
+  },
+
+  upgrade(id, callback){
+     return User.findById(id)
+     .then((user) => {
+       if(!user){
+         return callback("User not found");
+       }
+       return user.updateAttributes({ role: 1 })
+        })
+       .catch((err) => {
+        console.log(err);
+        callback(err);
+       });
+    
+  },
+
+  downgrade(id, callback){
+    return User.findById(id)
+    .then((user) => {
+      if(!user){
+        return callback("User not found");
+      }
+      return user.updateAttributes({ role: 0 })
+       })
+      .catch((err) => {
+       console.log(err);
+       callback(err);
+      });
+   
+ }
+
+
 
 
 }
