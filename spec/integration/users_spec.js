@@ -19,7 +19,7 @@ describe("routes : users", () => {
 
   });
 
-  describe("GET /users/sign_up", () => {
+  describe("GET /users/signup", () => {
 
     it("should render a view with a sign up form", (done) => {
       request.get(`${base}signup`, (err, res, body) => {
