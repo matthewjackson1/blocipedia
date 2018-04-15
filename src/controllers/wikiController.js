@@ -29,13 +29,14 @@ module.exports = {
           },
            
     create(req, res, next){
-       
+            console.log("OWL", req.user);
         // #1
             const authorized = new Authorizer(req.user).create();
        
         // #2
             if(authorized) {
             //console.log("authorized");
+            console.log("COW",req.user);
               let newWiki = {
                 title: req.body.title,
                 body: req.body.body,
