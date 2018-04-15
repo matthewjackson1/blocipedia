@@ -19,10 +19,10 @@ describe("routes : users", () => {
 
   });
 
-  describe("GET /users/sign_up", () => {
+  describe("GET /users/signup", () => {
 
     it("should render a view with a sign up form", (done) => {
-      request.get(`${base}sign_up`, (err, res, body) => {
+      request.get(`${base}signup`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("Sign up");
         done();
