@@ -3,17 +3,20 @@
 const faker = require("faker");
 
 //#2
- let wikis = [];
+ let wikis = [ ];
 
+ 
  for(let i = 1 ; i <= 15 ; i++){
    wikis.push({
      title: faker.hacker.noun(),
      body: faker.hacker.phrase(),
      userId: 1,
+     private: false,
      createdAt: new Date(),
      updatedAt: new Date()
    });
  }
+
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -27,7 +30,9 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
+   //console.log("WILD", wikis);
    return queryInterface.bulkInsert("Wikis", wikis, {});
+   
   },
 
   down: (queryInterface, Sequelize) => {

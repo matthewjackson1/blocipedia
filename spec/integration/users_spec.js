@@ -19,10 +19,10 @@ describe("routes : users", () => {
 
   });
 
-  describe("GET /users/sign_up", () => {
+  describe("GET /users/signup", () => {
 
     it("should render a view with a sign up form", (done) => {
-      request.get(`${base}sign_up`, (err, res, body) => {
+      request.get(`${base}signup`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("Sign up");
         done();
@@ -42,14 +42,14 @@ describe("routes : users", () => {
             form: {
               username: "fred",
               email: "user@example.com",
-              password: "123456789"
+              password: "123456789",
+              password_conf: "123456789"
             }
           }
     
           request.post(options,
             (err, res, body) => {
-    
-    // #2
+                  // #2
               User.findOne({where: {email: "user@example.com"}})
               .then((user) => {
                 expect(user).not.toBeNull();

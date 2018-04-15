@@ -11,7 +11,7 @@ module.exports = {
         console.log("Create Account");
         //console.log(req);
         let newUser = {
-            username: req.body.name,
+            username: req.body.username,
             email: req.body.email,
             password: req.body.password,
             passwordConfirmation: req.body.password_conf

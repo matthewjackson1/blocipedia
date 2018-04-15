@@ -7,7 +7,7 @@ const faker = require("faker");
  for(let i = 1 ; i <= 15 ; i++){
    users.push({
      username: faker.hacker.noun(),
-     email: faker.hacker.noun(),
+     email: faker.internet.email(),
      password: faker.hacker.noun(),
      createdAt: new Date(),
      updatedAt: new Date()
