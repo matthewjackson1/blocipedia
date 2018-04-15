@@ -56,8 +56,6 @@ describe("routes : wikis", () => {
     
 
     describe("GET /wikis", () => {
-        console.log("USEROBJ",this.user);
-      //console.log("3 CHECK", this.user);
       it("should respond with all wikis", (done) => {
         request.get(base, (err, res, body) => {
           expect(err).toBeNull();
@@ -69,7 +67,6 @@ describe("routes : wikis", () => {
     });
 
     describe("GET /wikis/new", () => {
-
       it("should render a view with a new wiki form", (done) => {
         request.get(`${base}new`, (err, res, body) => {
           expect(err).toBeNull();
@@ -81,18 +78,18 @@ describe("routes : wikis", () => {
     });
 
     describe("POST /wikis/create", () => {
-     //console.log("CREATE", this.user);
-      console.log("CONSOLE",this.user);
-      const options = {
-        url: `${base}create`,
-        form: {
-          title: "blink-182 songs",
-          body: "What's your favorite blink-182 song?",
-          userId: this.user.id
-        }
-      };
-
+     
       it("should create a new wiki and redirect", (done) => {
+
+        const options = {
+          url: `${base}create`,
+          form: {
+            title: "blink-182 songs",
+            body: "What's your favorite blink-182 song?",
+            userId: this.user.id
+          }
+        };
+
         request.post(options,
           (err, res, body) => {
             Wiki.findOne({where: {title: "blink-182 songs"}})
