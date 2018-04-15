@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include ../static/partials/head.ejs %>
+  </head>
+  <body>
+
+      <!-- Navigation -->
+      <% include ../static/partials/navbar.ejs %>
+
+      <!-- Page Content -->
+      <main class="container">
+        <% include ../static/partials/messages.ejs %>
+        <% if(currentUser) { %>
+            <% if(currentUser.role == 0) { %>
+        <form action="/users/<%=currentUser.id%>/upgrade" method="POST">
+            <article label="Amount: $15.00"></article>
+                <script
+                src="//checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                data-key="<%=keyPublishable%>"
+                data-amount="1500"
+                data-description="Premium Membership"
+                data-locale="auto">
+                </script>
+            </article>
+          </form>
+            
+            <% } if(currentUser.role == 1) { %>
+            You're a premium member already!
+            <form action="/users/<%=currentUser.id%>/downgrade" method="POST">
+                <button type="submit" class="btn btn-primary">Downgrade</button>               
+            </form>
+            <% } %>
+
+          <% } %>
+
+      </main>
+      <!-- /.container -->
+
+      <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>
+
+

@@ -1,5 +1,8 @@
 const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
+const keySecret = process.env.SECRET_KEY;
+const keyPublishable = process.env.PUBLISHABLE_KEY;
+const stripe = require("stripe")(keySecret);
 
 module.exports = {
     signup(req, res, next){
@@ -8,7 +11,7 @@ module.exports = {
     },
 
     create(req, res, next){
-        console.log("Create Account");
+        //console.log("Create Account");
         //console.log(req);
         let newUser = {
             username: req.body.username,
@@ -19,11 +22,11 @@ module.exports = {
      // #2
           userQueries.createUser(newUser, (err, user) => {
             if(err){
-              console.log("controller err");
+              //console.log("controller err");
               req.flash("error", err);
               res.redirect("/users/signup");
             } else {
-                console.log("eddy");
+                //console.log("eddy");
                 // #3
                 passport.authenticate("local")(req, res, () => {
                 console.log("auth success!");
@@ -55,6 +58,43 @@ module.exports = {
         req.logout();
         req.flash("notice", "You've successfully signed out!");
         res.redirect("/");
-    }
+    },
+
+    upgrade(req, res, next){
+      res.render("users/upgrade", {keyPublishable});
+      console.log(keyPublishable);
+    },
+
+    payment(req, res, next){
+      let amount = 1500;
+      console.log("BULBASAUR");
+      stripe.customers.create({
+        email: req.body.stripeEmail,
+        source: req.body.stripeToken
+      })
+      .then((customer) => {
+        console.log("IVYSAUR");
+        stripe.charges.create({
+          amount,
+          description: "Premium Membership",
+            currency: "usd",
+            customer: customer.id
+        })
+      })
+      .then((charge) => {
+        console.log("VENUSSAUR");
+        userQueries.upgrade(req.user.dataValues.id);
+        res.render("users/success");
+        
+        });
+          
+        },
+      downgrade(req, res, next){
+          console.log("CHARMANDER");
+          userQueries.downgrade(req.user.dataValues.id);
+          req.flash("notice", "You've successfully downgraded!");
+          res.redirect("/");
+          
+        },
         
 }
