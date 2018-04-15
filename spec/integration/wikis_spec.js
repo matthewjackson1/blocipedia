@@ -82,17 +82,18 @@ describe("routes : wikis", () => {
 
     describe("POST /wikis/create", () => {
      //console.log("CREATE", this.user);
-      console.log("CONSOLE",this.user);
-      const options = {
-        url: `${base}create`,
-        form: {
-          title: "blink-182 songs",
-          body: "What's your favorite blink-182 song?",
-          userId: this.user.id
-        }
-      };
+      
 
       it("should create a new wiki and redirect", (done) => {
+        console.log("CONSOLE",this.user);
+          const options = {
+            url: `${base}create`,
+            form: {
+              title: "blink-182 songs",
+              body: "What's your favorite blink-182 song?",
+              userId: this.user.id
+            }
+          };
         request.post(options,
           (err, res, body) => {
             Wiki.findOne({where: {title: "blink-182 songs"}})
