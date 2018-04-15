@@ -49,7 +49,7 @@ describe("routes : users", () => {
     
           request.post(options,
             (err, res, body) => {
-    
+              console.log(body);
     // #2
               User.findOne({where: {email: "user@example.com"}})
               .then((user) => {
