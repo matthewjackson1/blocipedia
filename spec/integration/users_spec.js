@@ -42,7 +42,8 @@ describe("routes : users", () => {
             form: {
               username: "fred",
               email: "user@example.com",
-              password: "123456789"
+              password: "123456789",
+              password_conf: "123456789"
             }
           }
     
