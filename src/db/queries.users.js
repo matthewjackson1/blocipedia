@@ -76,7 +76,29 @@ module.exports = {
        callback(err);
       });
    
- }
+ },
+
+ getUser(id, callback){
+    // #1
+       let result = {};
+       User.findById(id)
+       .then((user) => {
+    // #2
+         if(!user) {
+           callback(404);
+         } else {
+    // #3
+           result["user"] = user;
+
+           callback(null, result);
+         } 
+        })     
+             .catch((err) => {
+               callback(err);
+             });
+                
+       
+     }
 
 
 

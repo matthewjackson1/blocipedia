@@ -11,5 +11,9 @@ module.exports = class WikiPolicy extends ApplicationPolicy {
     return this.newPrivate();
   }
 
+  togglePrivacy() {
+    return this.newPrivate();
+  }
+
  
 }

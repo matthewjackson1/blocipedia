@@ -33,7 +33,7 @@ module.exports = {
       const authorized = new Authorizer(req.user).newPrivate();
        
       if(authorized) {
-        res.render("wikis/new_private");
+        res.render("wikis/newPrivate");
       } else {
         req.flash("notice", "You are not authorized to do that.");
         res.redirect("/wikis");
@@ -157,7 +157,17 @@ module.exports = {
                 res.redirect(`/wikis/${req.params.id}`);
               }
             });
-          }
+          },
+
+    togglePrivacy(req, res, next){
+          wikiQueries.togglePrivacy(req, req.body, (err, wiki) => {
+            if(err || wiki == null){
+              res.redirect(401, `/wikis/${req.params.id}/edit`);
+            } else {
+              res.redirect(`/wikis/${req.params.id}`);
+            }
+          });
+        },
 
 
         
