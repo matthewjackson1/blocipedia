@@ -8,8 +8,8 @@ const faker = require("faker");
  
  for(let i = 1 ; i <= 15 ; i++){
    wikis.push({
-     title: faker.hacker.noun(),
-     body: faker.hacker.phrase(),
+     title: `${faker.hacker.noun()}-${i}`,
+     body:  `${faker.hacker.phrase()}-${i}`,
      userId: 1,
      private: false,
      createdAt: new Date(),
