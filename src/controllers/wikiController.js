@@ -1,6 +1,7 @@
 const wikiQueries = require("../db/queries.wikis.js");
 const passport = require("passport");
 const Authorizer = require("../policies/wiki");
+const markdown = require( "markdown" ).markdown;
 
 module.exports = {
     wiki(req, res, next){
@@ -105,10 +106,11 @@ module.exports = {
     show(req, res, next){
        
             wikiQueries.getWiki(req.params.id, (err, wiki) => {
-       
+              
               if(err || wiki == null){
                 res.redirect(404, "/");
               } else {
+                wiki.body = markdown.toHTML(wiki.body);
                 res.render("wikis/show", {wiki});
               }
             });
