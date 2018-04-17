@@ -137,7 +137,7 @@ module.exports = {
            });
          },
 
-      makePublic(id, callback){
+      makePublic(id){
           return Wiki.all()
           .then((wikis) => {
             //console.log("WIKIWI", wikis);
@@ -154,10 +154,9 @@ module.exports = {
                 });
               }
             });
-            callback(null, wikis);
           })
           .catch((err) => {
-            callback(err);
+            console.log(err);
           })
         },
   
