@@ -1,4 +1,5 @@
 const userQueries = require("../db/queries.users.js");
+const wikiQueries = require("../db/queries.wikis.js");
 const passport = require("passport");
 const keySecret = process.env.SECRET_KEY;
 const keyPublishable = process.env.PUBLISHABLE_KEY;
@@ -43,6 +44,7 @@ module.exports = {
 
     signIn(req, res, next){
         passport.authenticate("local")(req, res, function () {
+          console.log("AUTHENTICATED");
           if(!req.user){
             req.flash("notice", "Sign in failed. Please try again.")
             res.redirect("/users/sign_in");
@@ -92,9 +94,27 @@ module.exports = {
       downgrade(req, res, next){
           console.log("CHARMANDER");
           userQueries.downgrade(req.user.dataValues.id);
+          wikiQueries.makePublic(req.user.dataValues.id);
           req.flash("notice", "You've successfully downgraded!");
           res.redirect("/");
           
         },
-        
+
+      show(req, res, next){
+
+          // #1
+           userQueries.getUser(req.params.id, (err, result) => {
+           //console.log("RESULT", result); 
+          // #2
+              if(err || result.user === undefined){
+                req.flash("notice", "No user found with that ID.");
+                res.redirect("/");
+              } else {
+      
+          // #3
+                res.render("users/show", {...result, keyPublishable});
+              
+              }
+            });
+          }
 }

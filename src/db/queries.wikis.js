@@ -1,9 +1,9 @@
 const User = require("./models").User;
 const Wiki = require("./models").Wiki;
-const Authorizer = require("../policies/application");
+const Authorizer = require("../policies/wiki");
 
 module.exports = {
-    getAllWikis(callback){
+  getAllWikis(callback){
         return Wiki.all()
         .then((wikis) => {
           callback(null, wikis);
@@ -95,6 +95,72 @@ module.exports = {
            callback("Forbidden");
          }
        });
-     }
+     },
+
+     togglePrivacy(req, updatedWiki, callback){
+  
+      // #1
+           return Wiki.findById(req.params.id)
+           .then((wiki) => {
+      
+      // #2
+             if(!wiki){
+               return callback("Wiki not found");
+             }
+      
+      // #3
+             const authorized = new Authorizer(req.user, wiki).togglePrivacy();
+      
+             if(authorized) {
+              //console.log("authorised");
+              //console.log(wiki);
+              //console.log("wiki private", wiki.private)      
+               wiki.update( {
+                 private: !wiki.private
+               })
+               .then(() => {
+                 //console.log("DONE", wiki);
+                 callback(null, wiki);
+               })
+               .catch((err) => {
+                console.log(err); 
+                callback(err);
+                 
+               });
+              
+             } else {
+      
+      // #5
+               req.flash("notice", "You are not authorized to do that.");
+               callback("Forbidden");
+             }
+           });
+         },
+
+      makePublic(id){
+          return Wiki.all()
+          .then((wikis) => {
+            //console.log("WIKIWI", wikis);
+            wikis.forEach((wiki) => {
+              if(wiki.userId == id && wiki.private == true) {
+                wiki.update({
+                  private: false
+                })
+                .then(() => {
+
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              }
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        },
+  
+
+     
 
 }
