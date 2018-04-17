@@ -135,7 +135,32 @@ module.exports = {
                callback("Forbidden");
              }
            });
-         }
+         },
+
+      makePublic(id, callback){
+          return Wiki.all()
+          .then((wikis) => {
+            //console.log("WIKIWI", wikis);
+            wikis.forEach((wiki) => {
+              if(wiki.userId == id && wiki.private == true) {
+                wiki.update({
+                  private: false
+                })
+                .then(() => {
+
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              }
+            });
+            callback(null, wikis);
+          })
+          .catch((err) => {
+            callback(err);
+          })
+        },
+  
 
      
 

@@ -1,4 +1,5 @@
 const userQueries = require("../db/queries.users.js");
+const wikiQueries = require("../db/queries.wikis.js");
 const passport = require("passport");
 const keySecret = process.env.SECRET_KEY;
 const keyPublishable = process.env.PUBLISHABLE_KEY;
@@ -93,6 +94,7 @@ module.exports = {
       downgrade(req, res, next){
           console.log("CHARMANDER");
           userQueries.downgrade(req.user.dataValues.id);
+          wikiQueries.makePublic(req.user.dataValues.id);
           req.flash("notice", "You've successfully downgraded!");
           res.redirect("/");
           
