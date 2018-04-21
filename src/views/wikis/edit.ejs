@@ -26,8 +26,9 @@
         <button type="submit" class="btn btn-primary">Update</button>
         
       </form>
-      <% if(currentUser.id == wiki.userId) { %>
-        <% if(currentUser.role == 1 || currentUser.role == 2) { %>
+      <% if(currentUser) { %>
+        <% if(currentUser.id == wiki.userId) { %>
+          <% if(currentUser.role == 1 || currentUser.role == 2) { %>
           
             <form action="/wikis/<%= wiki.id %>/togglePrivacy" method="post">
               <button type="submit" class="btn btn-primary">
@@ -40,6 +41,7 @@
             </form> 
         <% } %>
       <% } %>
+    <% } %>
     </main>
 
   </body>
