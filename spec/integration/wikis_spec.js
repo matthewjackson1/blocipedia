@@ -4,6 +4,8 @@ const base = "http://localhost:3000/wikis/";
 const sequelize = require('../../src/db/models/index').sequelize;
 const Wiki = require("../../src/db/models").Wiki;
 const User = require("../../src/db/models").User;
+const passport = require("passport");
+//const Authorizer = require("../src/policies/wiki");
 
 describe("routes : wikis", () => {
     
@@ -20,13 +22,15 @@ describe("routes : wikis", () => {
             .then((user) => {
                 //console.log("USER", user);
                 this.user = user;
+                
                 //console.log("MONKEY",this.user);
                 request.get({         // mock authentication
                 url: "http://localhost:3000/auth/fake",
                 form: {
                     username: user.username,
                     userId: user.id,
-                    email: user.email
+                    email: user.email,
+                    role: 0
                 }
                 });
                 Wiki.create({
@@ -56,6 +60,10 @@ describe("routes : wikis", () => {
     
 
     describe("GET /wikis", () => {
+<<<<<<< HEAD
+=======
+        
+>>>>>>> blocipedia-9
       it("should respond with all wikis", (done) => {
         request.get(base, (err, res, body) => {
           expect(err).toBeNull();
@@ -78,6 +86,7 @@ describe("routes : wikis", () => {
     });
 
     describe("POST /wikis/create", () => {
+<<<<<<< HEAD
      //console.log("CREATE", this.user);
       
 
@@ -91,6 +100,20 @@ describe("routes : wikis", () => {
               userId: this.user.id
             }
           };
+=======
+
+      it("should create a new wiki and redirect", (done) => {
+        //console.log("CONSOLE",this.user);
+        const options = {
+          url: `${base}create`,
+          form: {
+            title: "blink-182 songs",
+            body: "What's your favorite blink-182 song?",
+            userId: this.user.id,
+            email: this.user.email
+          }
+       };
+>>>>>>> blocipedia-9
         request.post(options,
           (err, res, body) => {
             Wiki.findOne({where: {title: "blink-182 songs"}})
@@ -113,7 +136,7 @@ describe("routes : wikis", () => {
         request.get(`${base}${this.wiki.id}`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).toContain("JS frameworks");
-          //console.log(body);
+          console.log("BETTY");
           done();
         });
       });
@@ -150,20 +173,27 @@ describe("routes : wikis", () => {
     });
 
     describe("GET /wikis/:id/edit", () => {
-
+      
       it("should render a view with an edit wiki form", (done) => {
+        //console.log("ELEPHANT", this.wiki);
         request.get(`${base}${this.wiki.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
+          console.log("RESY",  body);
           expect(body).toContain("Edit Wiki");
+          console.log("DONE DONE");
           expect(body).toContain("JS frameworks");
           done();
         });
+      
+        
+      
+        });
       });
 
-    });
+    
 
     describe("POST /wikis/:id/update", () => {
-
+      
       it("should update the wiki with the given values", (done) => {
         request.post({
           url: `${base}${this.wiki.id}/update`,
@@ -182,7 +212,7 @@ describe("routes : wikis", () => {
             done();
           })
           .catch((err) => {
-            console.log(err);
+            console.log("PANDA", err);
             done(); 
           });
         });
