@@ -40,6 +40,7 @@ module.exports = {
          ]
      })
        .then((wiki) => {
+         console.log("KAZOO", wiki);
          callback(null, wiki);
        })
        .catch((err) => {

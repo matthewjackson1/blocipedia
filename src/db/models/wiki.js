@@ -23,6 +23,15 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       as: "collaborators"
     });
+    Wiki.addScope("allAuthoredWikis", (userId) => {
+      return {
+        include: [{
+          model: models.Collaborator, as: "collaborators",
+        }],
+        where: { userId: userId},
+        order: [["createdAt", "ASC"]]
+      }
+    });
   
   };
   return Wiki;

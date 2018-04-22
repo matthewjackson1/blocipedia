@@ -43,10 +43,10 @@
       <% if(currentUser.role == 2 || currentUser.role == 1) { %>
         
           <h2> Collaborators <h2>
-           
+              <% console.log(wiki) %>
            <% if(wiki.collaborators) { %>
              <ul class ="list-group">
-             <% wiki.collaborators.forEach((collaborator) => { console.log(collaborator);  %>
+             <% wiki.collaborators.forEach((collaborator) => {  %>
                <li class="list-group-item">
                  <form action="/wikis/<%= wiki.id %>/collaborators/remove" method="post">
                    <button type="submit" class="btn btn-danger">Remove</button>
