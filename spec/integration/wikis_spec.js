@@ -60,10 +60,7 @@ describe("routes : wikis", () => {
     
 
     describe("GET /wikis", () => {
-<<<<<<< HEAD
-=======
         
->>>>>>> blocipedia-9
       it("should respond with all wikis", (done) => {
         request.get(base, (err, res, body) => {
           expect(err).toBeNull();
@@ -86,21 +83,6 @@ describe("routes : wikis", () => {
     });
 
     describe("POST /wikis/create", () => {
-<<<<<<< HEAD
-     //console.log("CREATE", this.user);
-      
-
-      it("should create a new wiki and redirect", (done) => {
-        console.log("CONSOLE",this.user);
-          const options = {
-            url: `${base}create`,
-            form: {
-              title: "blink-182 songs",
-              body: "What's your favorite blink-182 song?",
-              userId: this.user.id
-            }
-          };
-=======
 
       it("should create a new wiki and redirect", (done) => {
         //console.log("CONSOLE",this.user);
@@ -113,7 +95,6 @@ describe("routes : wikis", () => {
             email: this.user.email
           }
        };
->>>>>>> blocipedia-9
         request.post(options,
           (err, res, body) => {
             Wiki.findOne({where: {title: "blink-182 songs"}})
