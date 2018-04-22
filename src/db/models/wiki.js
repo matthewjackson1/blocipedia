@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       as: "collaborators"
     });
+  
   };
   return Wiki;
 };

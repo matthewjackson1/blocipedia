@@ -40,6 +40,32 @@
             </form> 
         <% } %>
       <% } %>
+      <% if(currentUser.role == 2 || currentUser.role == 1) { %>
+        
+          <h2> Collaborators <h2>
+           
+           <% if(wiki.collaborators) { %>
+             <ul class ="list-group">
+             <% wiki.collaborators.forEach((collaborator) => { console.log(collaborator);  %>
+               <li class="list-group-item">
+                 <form action="/wikis/<%= wiki.id %>/collaborators/remove" method="post">
+                   <button type="submit" class="btn btn-danger">Remove</button>
+                   <%= collaborator.User.username %>
+                   <input type="hidden" value="<%= collaborator.User.username %>" class="form-control" name="collaborator" >
+                 </form>
+               </li>
+             <% }) %>
+             </ul>
+           <% } %>
+          
+          <form action="/wikis/<%= wiki.id %>/collaborators/add" method="post">
+            <div class="input-group">            
+              <input type="text" class="form-control" name="collaborator" placeholder="Enter username">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+          </form>
+        <% } %>
+
     </main>
 
   </body>

@@ -1,28 +1,34 @@
- // #1
 const express = require('express');
 const router = express.Router();
-const Wiki = require('../models').Wiki;
-const User = require('../models').User;
-const wikiQueries = require ('../queries/wiki');
+const wikiQueries = require ('../db/queries.wikis.js');
 const collaboratorQueries = require("../db/queries.collaborators.js");
-const Authorizer = require('../policy/wiki');
+const Authorizer = require('../policies/wiki');
 module.exports = {
  
  // #2
    add(req, res, next){
-       wikiQueries.getWiki(req.params.id,(err,wiki)=>{
-        const authorized = new Authorizer(req.user, wiki).editCollaborator();
+    
+       
+       //console.log(collaborator);
+       
+       const authorized = new Authorizer(req.user).editCollaborator();
         if(authorized) {
-        collaboratorQueries.add(req, (err, collaborator) => {
-         if(err){
-           req.flash("error", err);
-            }
-        });
+          collaboratorQueries.add(req, (err, collab) => {
+            if(err){
+              console.log("ERR1", err);
+              req.flash("error", err);
+              }
+            
+              console.log("RES1");
+              res.redirect(req.headers.referer);
+              
+          });
         } else {
             req.flash("notice", "You must be signed in to do that.");
+            console.log("RES2");
             res.redirect(req.headers.referer);
         }
-     });
+     
 
    },
  
@@ -30,7 +36,7 @@ module.exports = {
    remove(req, res, next){
  
      if(req.user){
-       collaboratorQueries.removeCollaborator(req, (err, collaborator) => {
+       collaboratorQueries.remove(req, (err, collaborator) => {
          if(err){
            req.flash("error", err);
          }
