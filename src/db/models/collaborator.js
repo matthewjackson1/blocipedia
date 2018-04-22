@@ -21,6 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       onDelete: "CASCADE"
     });
+    Collaborator.addScope("collabsFor", (userId) => {
+      return {
+        include: [{
+          model: models.Wiki
+        }],
+        where: { userId: userId},
+        order: [["createdAt", "ASC"]]
+      }
+    });
   };
   return Collaborator;
 };
