@@ -15,5 +15,8 @@ module.exports = class WikiPolicy extends ApplicationPolicy {
     return this.newPrivate();
   }
 
+  editCollaborator() {
+    return this.newPrivate();
+  }
  
 }

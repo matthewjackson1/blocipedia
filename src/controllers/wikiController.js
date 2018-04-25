@@ -105,9 +105,10 @@ module.exports = {
        
     show(req, res, next){
        
-            wikiQueries.getWiki(req.params.id, (err, wiki) => {
-              
+            wikiQueries.getWiki(req.params.id, (err, result) => {
+              wiki = result["wiki"];
               if(err || wiki == null){
+                console.log(err);
                 res.redirect(404, "/");
               } else {
                 wiki.body = markdown.toHTML(wiki.body);
@@ -131,8 +132,8 @@ module.exports = {
     edit(req, res, next){
        
         // #1
-            wikiQueries.getWiki(req.params.id, (err, wiki) => {
-              if(err || wiki == null){
+            wikiQueries.getWiki(req.params.id, (err, result) => {
+              if(err || result == null){
                 res.redirect(404, "/");
               } else {
        
@@ -141,7 +142,7 @@ module.exports = {
        
         // #3
                 if(authorized){
-                  res.render("wikis/edit", {wiki});
+                  res.render("wikis/edit", {...result});
                 } else {
                   req.flash("You are not authorized to do that.")
                   res.redirect(`/wikis/${req.params.id}`)
