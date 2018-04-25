@@ -1,6 +1,7 @@
 const Wiki = require('./models').Wiki;
 const User = require('./models').User;
 const Collaborator = require('./models').Collaborator;
+const Authorizer = require("../policies/wiki");
 
 module.exports = {
     
@@ -58,8 +59,27 @@ module.exports = {
             })
   },
 
-  remove(collab, callback){
-    collab.destroy();
-    callback(null, collab);
-  },
+  remove(req, callback){
+    let collabId = req.body.collaborator;
+    let wikiId = req.params.wikiId;
+
+    const authorized = new Authorizer(req.user, wiki).destroy();
+
+    if(authorized){
+    Collaborator.destroy({ where: { 
+        userId : collabId,
+        wikiId : wikiId
+     }})
+    .then((deletedRecordsCount) => {
+        callback(null, deletedRecordsCount);
+    })
+    .catch((err) => {
+        callback(err);
+    });
+    } else {
+    req.flash("notice", "You are not authorized to do that.")
+    callback(401);
+    }
+    }
+    
 }

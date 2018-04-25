@@ -26,17 +26,18 @@ module.exports = {
 
   
     getWiki(id, callback){
-      console.log("GETWIKCKI");
+      //console.log("GETWIKCKI");
       let result = {};
       Wiki.findById(id)
        .then((wiki) => {
-         console.log("HUHUH");
+         //console.log("HUHUH");
          if(!wiki) {
            callback(404);
          } else {
            result["wiki"] = wiki;
            Collaborator.scope({method: ["collabsFor", id]}).all()
            .then((collabs) => {
+             //console.log("COLLABO", collabs);
              result["collaborators"] = collabs;
              callback(null, result);
            })

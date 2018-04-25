@@ -17,7 +17,7 @@
   
       <ul class="list-group">
           <% wikis.forEach((wiki) => { %>
-            <% if(!wiki.private || wiki.private && ( wiki.userId==currentUser.id ) || wiki.private && (wiki.collaborators.findIndex(collab => collab.userId == currentUser.id) != -1)) { %>
+            <% if(!wiki.private || wiki.private && ( wiki.userId==currentUser.id ) || wiki.private && wiki.collaborators != null && (wiki.collaborators.findIndex(collab => collab.userId == currentUser.id) != -1)) { %>
             <li class="list-group-item">
               <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
               <% if(wiki.private) { %> 

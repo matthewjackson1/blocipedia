@@ -1,15 +1,15 @@
 <h2> Collaborators <h2>
         
-     <% if(wiki.collaborators) { %>
+     <% if(collaborators) { %>
        <ul class ="list-group">
-       <% wiki.collaborators.forEach((collaborator) => {  %>
+       <% collaborators.forEach((collaborator) => {  %>
         <% console.log("COLLS", collaborator); %>
          <li class="list-group-item">
           <%= collaborator.User.username %>
           <% if(wiki.private == true && (currentUser.role == 2 || currentUser.role == 1)) { %>
             <form action="/wikis/<%= wiki.id %>/collaborators/remove" method="post">
               <button type="submit" class="btn btn-danger">Remove</button>
-              <input type="hidden" value="<%= collaborator.User.username %>" class="form-control" name="collaborator" >
+              <input type="hidden" value="<%= collaborator.User.id %>" class="form-control" name="collaborator" >
             </form>
           <% } %>
          </li>
