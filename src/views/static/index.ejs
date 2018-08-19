@@ -13,14 +13,11 @@
         <% include ../static/partials/messages.ejs %>
         <!-- Jumbotron Header -->
         <header class="jumbotron my-4">
-          <h1 class="display-3">Welcome to Blocipedia</h1>
-          <p class="lead">An application for users to share information.</p>
-          <% if(currentUser) { %>
-           
-              <a class="btn btn-primary btn-lg" href="/wikis">Wikis
-              </a>
-              <a class="btn btn-primary btn-lg" href="/users/<%= currentUser.id %>">Profile</a>
-           
+          <h1 class="display-3">Welcome to Source</h1>
+          <p class="lead">A platform for wiki browsing, creation and collaboration.</p>
+          <% if(currentUser) { %>  
+            <a class="btn btn-primary btn-lg" href="/wikis">Browse Wikis
+            </a>          
           <% } else { %>
           <a href="/users/signup" class="btn btn-primary btn-lg">Sign up</a>
           <% } %>

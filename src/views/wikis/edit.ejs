@@ -9,42 +9,60 @@
     <main class="container">
       <% include ../static/partials/messages.ejs %>
 
-      <h1>Edit Wiki</h1>
-
-<!-- #1 -->
-      <form action="/wikis/<%= wiki.id %>/update" method="post">
-        <div class="form-group">
-          <label for="title">Wiki title</label>
-<!-- #2 -->
-          <input value="<%= wiki.title %>" type="text" class="form-control" name="title" aria-describedby="titleHelp" placeholder="Enter Title">
-        </div>
-        <div class="form-group">
-          <label for="description">Body</label>
-<!-- #3 -->
-          <textarea rows="4" class="form-control" name="body" placeholder="Enter Body"><%= wiki.body %></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-        
-      </form>
-      <% if(currentUser) { %>
-      <% if(currentUser.id == wiki.userId) { %>
-        <% if(currentUser.role == 1 || currentUser.role == 2) { %>
-          
-            <form action="/wikis/<%= wiki.id %>/togglePrivacy" method="post">
-              <button type="submit" class="btn btn-primary">
-                <% if(wiki.private == true) { %>
-                  Make Public
-                <% } else { %>
-                  Make Private
+      <div class="grid">
+          <div class="row">
+            <a href="/wikis">< Back to all wikis</a>
+          </div>
+          <div class="row">
+            <div class="column">
+              <h1>Edit '<%= wiki.title %>'</h1>
+              
+            </div>
+            <% if(currentUser) { %>
+              <div class="column ml-auto">
+                <% if(currentUser.id == wiki.userId) { %>
+                  <% if(currentUser.role == 1 || currentUser.role == 2) { %>
+                      <form action="/wikis/<%= wiki.id %>/togglePrivacy" method="post">
+                        <button type="submit" class="btn btn-secondary">
+                          <% if(wiki.private == true) { %>
+                            Make Public
+                          <% } else { %>
+                            Make Private
+                          <% } %>
+                        </button>
+                      </form> 
+                  <% } %>
                 <% } %>
-              </button>
-            </form> 
-         <% } %>
-       <% } %>
-      <% } %>
+              </div>
+            <% } %>
+          </div>
 
-      <% include ../collaborators/edit.ejs %>
+          <div class="row">
+            <div class="column form-col">
+              <form action="/wikis/<%= wiki.id %>/update" method="post">
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input value="<%= wiki.title %>" type="text" class="form-control" name="title" aria-describedby="titleHelp" placeholder="Enter Title">
+                </div>
+                <div class="form-group">
+                  <label for="description">Wiki body</label>
+                  <textarea rows="4" class="form-control" name="body" placeholder="Enter Body"><%= wiki.body %></textarea>
+                </div>
+               
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <a href="/wikis" class="btn btn-secondary btn">Cancel</a>
+               
+              </form>
+            </div>   
+          </div>
 
+        <div class="row collab-row">
+          <div class="column">
+            <% include ../collaborators/edit.ejs %>
+          </div>
+        </div>
+
+      </div>
     </main>
 
   </body>
